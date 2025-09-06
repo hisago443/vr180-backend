@@ -1,7 +1,7 @@
 """
 Main FastAPI application for VR 180 Video Processing Platform.
 """
-
+import os
 import logging
 import structlog
 from contextlib import asynccontextmanager
@@ -243,14 +243,14 @@ app = create_app()
 
 if __name__ == "__main__":
     import uvicorn
-    
-    settings = get_settings()
-    
+    port = int(os.environ.get("PORT", 8080))
     uvicorn.run(
         "app.main:app",
-        host=settings.host,
-        port=settings.port,
-        reload=settings.debug,
-        log_level=settings.log_level.lower(),
+        host="0.0.0.0",
+        port=port,
+        reload=False,                # disable reload in production
+        log_level="info",            # or settings.log_level.lower()
         access_log=True
     )
+
+
